@@ -180,6 +180,8 @@ int main()
     float color0[4] = { 0.8f, 0.3f, 0.02f, 1.0f };
     float color1[4] = { 0.8f, 0.3f, 0.02f, 1.0f };
     float color2[4] = { 0.8f, 0.3f, 0.02f, 1.0f };
+
+    float backgroundColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -188,13 +190,6 @@ int main()
         // -----
         processInput(window);
 
-        // render
-        // ------
-		glEnable(GL_DEPTH_TEST);
-
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -206,12 +201,20 @@ int main()
         ImGui::Text("Hello there adventurer!");
         ImGui::SliderInt("Scale", &scale, 10, 200);
         // Fancy color editor that appears in the window
+        ImGui::ColorEdit4("Background Color", backgroundColor);
         ImGui::ColorEdit4("Color0", color0);
         ImGui::ColorEdit4("Color1", color1);
         ImGui::ColorEdit4("Color2", color2);
         // Ends the window
         ImGui::End();
 
+        // render
+        // ------
+		glEnable(GL_DEPTH_TEST);
+
+        glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2],backgroundColor[3]);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
